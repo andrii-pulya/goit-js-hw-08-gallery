@@ -1,9 +1,16 @@
 import cards from './gallery-items.js';
-console.log(createGalleryMarkup(cards));
 
-const galleryContainer = document.querySelector('.js-gallery');
+const refs = {
+  gallery: document.querySelector('.js-gallery'),
+  lightbox: document.querySelector('.js-lightbox'),
+  lightboxImage: document.querySelector('.lightbox__image'),
+
+};
+
 const galleryMarkup = createGalleryMarkup(cards);
-galleryContainer.insertAdjacentHTML('beforeend', galleryMarkup);
+refs.gallery.insertAdjacentHTML('beforeend', galleryMarkup);
+
+refs.gallery.addEventListener('click', onCardOpen);
 
 function createGalleryMarkup(cards) {
   return cards
@@ -27,3 +34,14 @@ function createGalleryMarkup(cards) {
   }).join('');
   
 }
+
+function onCardOpen(evt) {
+  evt.preventDefault();
+
+  if (!evt.target.classList.contains('gallery__image')) {
+    return;
+  }
+  console.log(evt.target);
+  refs.lightbox.classList.add('is-open');
+  refs.lightboxImage.src = `${evt.target.dataset.source}`;
+};
