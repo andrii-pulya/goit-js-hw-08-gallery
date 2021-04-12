@@ -13,6 +13,7 @@ refs.gallery.insertAdjacentHTML('beforeend', galleryMarkup);
 
 refs.gallery.addEventListener('click', onCardOpen);
 refs.lightbox.addEventListener('click', modalClose);
+window.addEventListener('keydown', escModalClose);
 
 
 function createGalleryMarkup(cards) {
@@ -35,37 +36,37 @@ function createGalleryMarkup(cards) {
       `;
 
   }).join('');
-  
 }
 
-function onCardOpen(evt) {
+function onCardOpen (evt) {
   evt.preventDefault();
 
-  if (!evt.target.classList.contains('gallery__image')) {
-    return;
+  console.log(evt.target.nodeName);
+
+  if (evt.target.nodeName !== 'IMG') {
+    return
   }
-  console.log(evt.target);
+
   refs.lightbox.classList.add('is-open');
   refs.lightboxImage.src = `${evt.target.dataset.source}`;
 };
 
-function modalClose(evt) {
+function modalClose (evt) {
   evt.preventDefault();
-  // console.log(evt.target);
   
-if (!evt.target.classList.contains('lightbox__button') || !evt.target.classList.contains('lightbox__overlay')) {
+if (evt.target.nodeName === 'IMG') {
     return
   }
-    refs.lightbox.classList.remove('is-open');
     refs.lightboxImage.src = '';
+    refs.lightbox.classList.remove('is-open');
 }
 
-// if (!evt.target.classList.contains('lightbox__overlay')) {
-//     return
-//   } else {
+function escModalClose(evt) {
+  evt.preventDefault();
 
-// document.addEventListener('keydown', function(event) {
-//   if (event.code == 'KeyZ' && (event.ctrlKey || event.metaKey)) {
-//     alert('Отменить!')
-//   }
-// });
+  if (evt.key !== 'Escape') {
+    return
+  }
+    refs.lightboxImage.src = '';
+    refs.lightbox.classList.remove('is-open');
+}
